@@ -12,6 +12,7 @@ import RemoveObject from './pages/RemoveObject'
 import ReviewResume from './pages/ReviewResume'
 import Home from './pages/Home'
 import Layout from './pages/Layout'
+import BlogTitles from './pages/BlogTitles'
 
 function App() {
   
@@ -23,7 +24,7 @@ function App() {
         <Route path='/ai' element={<Layout/>}>
         <Route index element={<Dashboard/>}/>
         <Route path='write-article' element={<WriteArticle/>}/>
-        <Route path='blog-titles' element={<WriteArticle/>}/>
+        <Route path='blog-titles' element={<BlogTitles/>}/>
         <Route path='generate-images' element={<GenerateImages/>}/>
         <Route path='remove-background' element={<RemoveBackgound/>}/>
         <Route path='remove-object' element={<RemoveObject/>}/>
