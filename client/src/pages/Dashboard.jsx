@@ -3,6 +3,7 @@ import { dummyCreationData } from '../assets/assets'
 import { Gem, Sparkle, Sparkles } from 'lucide-react';
 import { useUser, useClerk,SignIn, Protect } from '@clerk/clerk-react'
 import CreationItem from '../components/CreationItem';
+
 const Dashboard = () => {
 
     const [creations,setcreations] = useState([]);

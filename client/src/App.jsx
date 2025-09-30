@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -13,12 +13,15 @@ import ReviewResume from './pages/ReviewResume'
 import Home from './pages/Home'
 import Layout from './pages/Layout'
 import BlogTitles from './pages/BlogTitles'
+import { useAuth } from '@clerk/clerk-react'
+import {Toaster} from 'react-hot-toast'
 
 function App() {
   
 
   return (
     <div>
+    <Toaster />
       <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/ai' element={<Layout/>}>
