@@ -151,11 +151,10 @@ res.json({ success: true,content: secure_url})
 
 
 
-
 export const removeImageBackground = async (req,res)=>{
     try{
         const { userId } = req.auth();
-        const {image} = req.file;
+        const image = req.file;
         const plan = req.plan;
 
         if(plan !== 'premium' ){
