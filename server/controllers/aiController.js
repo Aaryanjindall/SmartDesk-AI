@@ -1,13 +1,13 @@
-import OpenAI from "openai";
+
+import {GoogleGenAI} from '@google/genai';
 import sql from "../configs/db.js";
 import { clerkClient } from "@clerk/express";
 import axios from 'axios'
 import { v2 as cloudinary} from "cloudinary";
 import FormData from "form-data";
-const AI = new OpenAI({
-    apiKey: process.env.GEMINI_API_KEY,
-    baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/"
-});
+
+const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
+
 import fs from 'pdf-parse/lib/pdf-parse.js'
 
 
@@ -18,25 +18,18 @@ export const generateArticle = async (req,res)=>{
         const {prompt,length} = req.body;
         const plan = req.plan;
         const free_usage = req.free_usage;
-
+        console.log("hello");
         if(plan !== 'premium' && free_usage >= 20){
             return res.json({ success: false, message: "Limit reached, Upgrade to continue."})
-
+        
         }
 
-        const response = await AI.chat.completions.create({
-    model: "gemini-2.0-flash",
-    messages: [
-        {
-            role: "user",
-            content: prompt,
-        },
-    ],
-    temperature: 0.7,
-    max_tokens: length,
-});
-console.log(response);
-const content = response.choices[0].message.content
+        const response = await ai.models.generateContent({
+    model: 'gemini-2.5-flash',
+    contents: prompt,
+  });
+  console.log(response.text);
+const content = response.text
 
 await sql`INSERT INTO creations (user_id,prompt,content,type) VALUES(${userId},${prompt}, ${content}, 'article')`;
 

@@ -12,6 +12,7 @@ const Community = () => {
 
     const [creations,setCreations] = useState([])
     const {user} = useUser()
+    
     const [loading,setloading] = useState(true);
     const { getToken } = useAuth()
 
