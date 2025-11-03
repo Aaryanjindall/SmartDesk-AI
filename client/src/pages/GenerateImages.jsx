@@ -11,6 +11,7 @@ const GenerateImages = () => {
     'Realistic',
     'Ghibli style',
     'Anime style',
+    
     'Cartoon style',
     'Fantasy style',
     '3D style',
