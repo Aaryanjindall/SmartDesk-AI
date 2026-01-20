@@ -11,8 +11,11 @@ const Navbar = () => {
     const {openSignIn} = useClerk()
 
     return(
-        <div className='fixed z-5 w-full backdrop-blur-2xl flex justify-between items-center py-3 px-4 sm:px-20 xl:32 '>
-            <img src={assets.logo} className='w-32 sm:w-44 cursor-pointer' onClick={()=>navigate('/')}/>
+        <div className='fixed top-0 z-5 w-full h-20
+  bg-white/70 backdrop-blur-xl
+  flex justify-between items-center
+  px-4 sm:px-20 '>
+            <img src={assets.logo} className='w-20 sm:w-32 md:w-40 cursor-pointer' onClick={()=>navigate('/')}/>
 
             {
                 user ? <UserButton/> : (

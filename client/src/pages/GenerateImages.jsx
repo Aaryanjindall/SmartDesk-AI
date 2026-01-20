@@ -11,7 +11,7 @@ const GenerateImages = () => {
     'Realistic',
     'Ghibli style',
     'Anime style',
-    
+
     'Cartoon style',
     'Fantasy style',
     '3D style',
@@ -30,9 +30,13 @@ const GenerateImages = () => {
     e.preventDefault();
     try{
       setloading(true)
-      const prompt = `Generate an image of $(input) int the style ${selectedStyle}`
+      const prompt = `Generate an image of ${input} int the style ${selectedStyle}`
+      console.log(prompt);
 
-      const { data } = await axios.post('/api/ai/generate-generate-image',{prompt,publish},{headers: {Authorization : `Bearer ${await getToken()}`}})
+      const { data } = await axios.post('http://localhost:3000/api/ai/generate-image',{prompt,publish},{headers: {Authorization : `Bearer ${await getToken()}`}})
+
+      console.log(data);
+      
 
       if(data.success){
         setcontent(data.content)
@@ -42,8 +46,8 @@ const GenerateImages = () => {
       }
     }
     catch(error){
-      toast.error(data.message)
-    }
+  toast.error(error.response?.data?.message || error.message)
+}
     setloading(false)
     
   }
@@ -109,7 +113,7 @@ const GenerateImages = () => {
           bg-gradient-to-r from-[#00AD25] to-[#04FF50] text-white px-4 py-2 mt-6 
           text-sm rounded-lg cursor-pointer transform transition active:scale-95"
         >
-        { loading ? <span className='w-4 h-4 my-1 rounded-full border-2 border-t-transport animate-spin'></span> : <Image className='w-5'/>} 
+        { loading ? <span className='w-4 h-4 my-1 rounded-full border-2 border-t-transparent animate-spin'></span> : <Image className='w-5'/>} 
          Generate Image
         </button>
       </form>

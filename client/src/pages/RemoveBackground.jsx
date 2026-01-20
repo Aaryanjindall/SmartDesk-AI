@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 const RemoveBackgound = () => {
-      const [input, setInput] = useState('')
+      const [input, setInput] = useState(null)
       const [loading,setloading] = useState(false);
   const[content,setcontent]  = useState('')
 
@@ -21,14 +21,16 @@ const RemoveBackgound = () => {
           const formData = new FormData()
           formData.append('image',input)
 
-      const { data } = await axios.post('/api/ai/remove-image-background',formData,{headers: {Authorization : `Bearer ${await getToken()}`}})
+      const { data } = await axios.post('/api/ai/remove-image-background',formData ,{headers: {Authorization : `Bearer ${await getToken()}`}})
 
       if(data.success){
-        setcontent(data.content)
+        setcontent(`${data.content}?v=${data.version}`);
       }
+      
       else{
         toast.error(data.message)
       }
+      
         }
         catch(error){
           toast.error(error.message)
@@ -89,8 +91,11 @@ Remove background
           </div>
         </div>
           ) : (
+            
             <img src={content} alt="" className='mt-3 w-full'/>
+            
           )
+          
         }
         
       </div>

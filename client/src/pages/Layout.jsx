@@ -14,7 +14,7 @@ const Layout = () => {
     return user?(
         <div className='flex flex-col items-start justify-start h-screen
         '>
-            <nav>
+            {/* <nav>
                 <img className='cursor-pointer w-32 sm:w-44'
                 src={assets.logo} onClick={()=>navigate('/')}></img>
                 {
@@ -22,7 +22,27 @@ const Layout = () => {
     ? <X onClick={() => setsidebar(false)} className="w-6 h-6 text-gray-600 sm:hidden cursor-pointer" /> 
     : <Menu onClick={() => setsidebar(true)} className="w-6 h-6 text-gray-600 sm:hidden cursor-pointer" />
 }
-            </nav>
+            </nav> */}
+            <nav className="
+  h-16 w-full
+  flex items-center justify-between
+  px-4 sm:px-6
+  bg-white border-b
+">
+  <img
+    src={assets.logo}
+    className="h-8 sm:h-28 cursor-pointer"
+    onClick={() => navigate('/')}
+    alt="SmartDesk.ai"
+  />
+
+  {
+    sidebar
+      ? <X onClick={() => setsidebar(false)} className="w-6 h-6 sm:hidden cursor-pointer" />
+      : <Menu onClick={() => setsidebar(true)} className="w-6 h-6 sm:hidden cursor-pointer" />
+  }
+</nav>
+
             <div className='flex-1 w-full flex h-[calc(100vh-64px)]'>
                 <Sidebar sidebar={sidebar} setsidebar={setsidebar}/>
                 <div className='flex-1 bg-[#F4F7FB]'>

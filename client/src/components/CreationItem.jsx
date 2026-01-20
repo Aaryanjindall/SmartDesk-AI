@@ -8,9 +8,21 @@ const CreationItem = ({item}) => {
             <div className='flex justify-between items-center gap-4'>
                 <div>
                     <h2>{item.prompt}</h2>
-                    <p className='text-gray-500'>{item.type} - {new Date(item.createdAt).toLocaleDateString()}</p>
+                    <p className="text-gray-500">
+  {item.type} •{" "}
+  {item.createdAt
+    ? new Date(item.createdAt).toLocaleDateString()
+    : "Just now"}
+</p>
+
                 </div>
-                <button className='bg-[#EFF6FF] border border-[#BFDBFE] text-[#1E40AF] px-4 py-1 rounded-full'>{item.type}</button>
+                <button
+  onClick={(e) => e.stopPropagation()}
+  className="bg-[#EFF6FF] border border-[#BFDBFE] text-[#1E40AF] px-4 py-1 rounded-full"
+>
+  {item.type}
+</button>
+
             </div>
             {
                 expanded && (
@@ -21,7 +33,7 @@ const CreationItem = ({item}) => {
                                 </div>
 
                         ) : (
-                            <div className='mt-3 h-full overflow-y-scroll text -sm text-slate-700'>
+                            <div className='mt-3 h-full overflow-y-scroll text-sm text-slate-700'>
                                 <div className='reset-tw'> 
                                     <Markdown>{item.content}</Markdown>
                                     

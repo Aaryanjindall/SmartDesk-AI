@@ -18,6 +18,7 @@ const Dashboard = () => {
             const { data } = await axios.get('/api/user/get-user-creations', {
                 headers : {Authorization: `Bearer ${await getToken()}`}
             })
+            
             if(data.success){
                 setcreations(data.creations)
             }else{
@@ -34,6 +35,9 @@ const Dashboard = () => {
     useEffect(()=>{
         getDashboardData()
     },[])
+//     useEffect(() => {
+//     if (isSignedIn) getDashboardData();
+//   }, [isSignedIn]);
      
     return(
         <div className='h-full overflow-y-scroll p-6'>
@@ -63,19 +67,15 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            (
-                loading ? 
-            )
-
+           {loading && (
+        <p className="mt-6 text-sm text-gray-400">Loading dashboard...</p>
+      )}
             <div className='space-y-3'>
                 <p className='mt-6 mb-4'>Recent Creations</p>
                 {
                     creations.map((item)=> <CreationItem key={item.id} item={item}/>)
                 }
-            </div>
-
-            
-            
+            </div>            
         </div>
     )
 }
