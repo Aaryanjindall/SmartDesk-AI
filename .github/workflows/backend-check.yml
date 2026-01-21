@@ -26,4 +26,4 @@ jobs:
       - name: Syntax check
         run: |
           cd server
-          node -c index.js
+          node -c server.js
