@@ -12,7 +12,13 @@ const app = express()
 await connectCloudinary()
 
 
-app.use(cors())
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://smart-desk-ai-eight.vercel.app/"
+  ],
+  credentials: true
+}));
 app.use(express.json())
 app.use(clerkMiddleware())
 // app.use(requireAuth())
