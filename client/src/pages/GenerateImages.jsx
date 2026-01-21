@@ -33,7 +33,7 @@ const GenerateImages = () => {
       const prompt = `Generate an image of ${input} int the style ${selectedStyle}`
       console.log(prompt);
 
-      const { data } = await axios.post('http://localhost:3000/api/ai/generate-image',{prompt,publish},{headers: {Authorization : `Bearer ${await getToken()}`}})
+      const { data } = await axios.post('/api/ai/generate-image',{prompt,publish},{headers: {Authorization : `Bearer ${await getToken()}`}})
 
       console.log(data);
       
