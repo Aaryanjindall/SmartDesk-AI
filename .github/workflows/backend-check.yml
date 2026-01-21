@@ -1,0 +1,29 @@
+name: Backend Safety Check
+
+on:
+  push:
+    paths:
+      - "server/**"
+
+jobs:
+  backend-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: |
+          cd server
+          npm install
+
+      - name: Syntax check
+        run: |
+          cd server
+          node -c index.js
