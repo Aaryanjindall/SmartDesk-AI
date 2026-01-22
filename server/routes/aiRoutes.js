@@ -11,7 +11,7 @@ console.log("routes mai aagya");
 aiRouter.post('/generate-blog-title',auth,generateBlogTitle)
 aiRouter.post('/generate-image',auth,generateImage)
 aiRouter.post('/remove-image-background',auth, upload.single('image') ,  removeImageBackground)
-aiRouter.post('/remove-image-object', upload.single('image') ,auth, removeImageObject)
+aiRouter.post('/remove-image-object',auth ,upload.single('image') , removeImageObject)
 aiRouter.post('/resume-review', upload.single('resume') ,auth, resumeReview)
 
 export default aiRouter
