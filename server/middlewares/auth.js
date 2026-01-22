@@ -33,9 +33,9 @@ import { clerkClient } from "@clerk/express";
 
 export const auth = async (req, res, next) => {
   try {
-    const authData = req.auth();
+    const authData = req.auth; // ✅ FIX HERE
 
-    if (!authData?.userId) {
+    if (!authData || !authData.userId) {
       return res.status(401).json({
         success: false,
         message: "Unauthorized"
