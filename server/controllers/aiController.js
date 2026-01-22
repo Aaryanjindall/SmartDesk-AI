@@ -260,7 +260,7 @@ export const generateImage = async (req, res) => {
     if (plan !== "premium") {
       return res.json({
         success: false,
-        message: "This feature is only available for premium users"
+        message: "This feature is only available for premium subscriptions"
       });
     }
 
@@ -268,33 +268,35 @@ export const generateImage = async (req, res) => {
       return res.json({ success: false, message: "Prompt is required" });
     }
 
-    // ✅ FormData (THIS WAS MISSING)
+    // 🔥 FORM DATA (IMPORTANT)
     const formData = new FormData();
     formData.append("prompt", prompt);
 
+    // 🔥 CLIPDROP REQUEST
     const clipdropResponse = await axios.post(
       "https://clipdrop-api.co/text-to-image/v1",
       formData,
       {
         headers: {
-          Authorization: `Bearer ${process.env.CLIPDROP_API_KEY}`,
-          ...formData.getHeaders()
+          ...formData.getHeaders(),
+          "x-api-key": process.env.CLIPDROP_API_KEY
         },
         responseType: "arraybuffer"
       }
     );
 
-    // Convert buffer → base64
+    // 🔥 Convert buffer → base64
     const base64Image =
       "data:image/png;base64," +
       Buffer.from(clipdropResponse.data).toString("base64");
 
-    // Upload to Cloudinary
+    // 🔥 Upload to Cloudinary
     const uploadResult = await cloudinary.uploader.upload(base64Image, {
       folder: "ai-generated",
       format: "png"
     });
 
+    // Save to DB
     await sql`
       INSERT INTO creations (user_id, prompt, content, type, publish)
       VALUES (${userId}, ${prompt}, ${uploadResult.secure_url}, 'image', ${publish ?? false})
@@ -308,9 +310,7 @@ export const generateImage = async (req, res) => {
   } catch (error) {
     console.error(
       "Backend Error:",
-      error.response?.data
-        ? Buffer.from(error.response.data).toString()
-        : error.message
+      error.response?.data?.toString() || error.message
     );
 
     res.json({
@@ -319,7 +319,6 @@ export const generateImage = async (req, res) => {
     });
   }
 };
-
 
 
 
