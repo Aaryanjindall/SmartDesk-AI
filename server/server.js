@@ -14,7 +14,7 @@ await connectCloudinary()
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://smart-desk-ai-eight.vercel.app/"
+    "https://smart-desk-ai-eight.vercel.app"
   ],
   credentials: true
 }));
