@@ -196,6 +196,7 @@ export const generateImage = async (req, res) => {
         message: "Prompt is required"
       });
     }
+console.log("CLIPDROP KEY:", process.env.CLIPDROP_API_KEY ? "FOUND" : "MISSING");
 
     // 🔥 Clipdrop API call (Text → Image)
     const clipdropResponse = await axios.post(
@@ -205,7 +206,7 @@ export const generateImage = async (req, res) => {
       },
       {
         headers: {
-          "x-api-key": process.env.CLIPDROP_API_KEY,
+          Authorization: `Bearer ${process.env.CLIPDROP_API_KEY}`,
           "Content-Type": "application/json"
         },
         responseType: "arraybuffer" // ⚠️ VERY IMPORTANT
