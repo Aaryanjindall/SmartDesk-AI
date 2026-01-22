@@ -183,54 +183,124 @@ res.json({ success: true,content})
 //   }
 // };
 
+// export const generateImage = async (req, res) => {
+//   try {
+//     const { prompt, publish } = req.body;
+//     const { userId, plan } = req;
+//     if(plan !== 'premium' ){
+//             return res.json({ success: false, message: "This feature is only available for premium subscriptions"})
+//         }
+//     if (!prompt) {
+//       return res.json({
+//         success: false,
+//         message: "Prompt is required"
+//       });
+//     }
+// console.log("CLIPDROP KEY:", process.env.CLIPDROP_API_KEY ? "FOUND" : "MISSING");
+
+//     // 🔥 Clipdrop API call (Text → Image)
+//     const clipdropResponse = await axios.post(
+//       "https://clipdrop-api.co/text-to-image/v1",
+//       {
+//         prompt: prompt
+//       },
+//       {
+//         headers: {
+//           Authorization: `Bearer ${process.env.CLIPDROP_API_KEY}`,
+//           "Content-Type": "application/json"
+//         },
+//         responseType: "arraybuffer" // ⚠️ VERY IMPORTANT
+//       }
+//     );
+
+//     console.log("h1");
+//     // 🔥 Convert image buffer → base64
+//     const base64Image =
+//       "data:image/png;base64," +
+//       Buffer.from(clipdropResponse.data).toString("base64");
+// console.log("h2");
+//     // 🔥 Upload to Cloudinary
+//     const uploadResult = await cloudinary.uploader.upload(base64Image, {
+//       folder: "ai-generated",
+//       format: "png"
+//     });
+//         // Save to DB
+//     await sql`
+//       INSERT INTO creations (user_id, prompt, content, type, publish)
+//       VALUES (${userId}, ${prompt}, ${uploadResult.secure_url}, 'image', ${publish ?? false})
+//     `;
+
+//     return res.json({
+//       success: true,
+//       content: uploadResult.secure_url
+//     });
+
+//   } catch (error) {
+//     console.error(
+//       "Backend Error:",
+//       error.response?.data || error.message
+//     );
+
+//     return res.json({
+//       success: false,
+//       message: error.message
+//     });
+//   }
+// };
+
+
+// import FormData from "form-data";
+// import axios from "axios";
+
 export const generateImage = async (req, res) => {
   try {
     const { prompt, publish } = req.body;
     const { userId, plan } = req;
-    if(plan !== 'premium' ){
-            return res.json({ success: false, message: "This feature is only available for premium subscriptions"})
-        }
-    if (!prompt) {
+
+    if (plan !== "premium") {
       return res.json({
         success: false,
-        message: "Prompt is required"
+        message: "This feature is only available for premium users"
       });
     }
-console.log("CLIPDROP KEY:", process.env.CLIPDROP_API_KEY ? "FOUND" : "MISSING");
 
-    // 🔥 Clipdrop API call (Text → Image)
+    if (!prompt) {
+      return res.json({ success: false, message: "Prompt is required" });
+    }
+
+    // ✅ FormData (THIS WAS MISSING)
+    const formData = new FormData();
+    formData.append("prompt", prompt);
+
     const clipdropResponse = await axios.post(
       "https://clipdrop-api.co/text-to-image/v1",
-      {
-        prompt: prompt
-      },
+      formData,
       {
         headers: {
           Authorization: `Bearer ${process.env.CLIPDROP_API_KEY}`,
-          "Content-Type": "application/json"
+          ...formData.getHeaders()
         },
-        responseType: "arraybuffer" // ⚠️ VERY IMPORTANT
+        responseType: "arraybuffer"
       }
     );
 
-    console.log("h1");
-    // 🔥 Convert image buffer → base64
+    // Convert buffer → base64
     const base64Image =
       "data:image/png;base64," +
       Buffer.from(clipdropResponse.data).toString("base64");
-console.log("h2");
-    // 🔥 Upload to Cloudinary
+
+    // Upload to Cloudinary
     const uploadResult = await cloudinary.uploader.upload(base64Image, {
       folder: "ai-generated",
       format: "png"
     });
-        // Save to DB
+
     await sql`
       INSERT INTO creations (user_id, prompt, content, type, publish)
       VALUES (${userId}, ${prompt}, ${uploadResult.secure_url}, 'image', ${publish ?? false})
     `;
 
-    return res.json({
+    res.json({
       success: true,
       content: uploadResult.secure_url
     });
@@ -238,15 +308,18 @@ console.log("h2");
   } catch (error) {
     console.error(
       "Backend Error:",
-      error.response?.data || error.message
+      error.response?.data
+        ? Buffer.from(error.response.data).toString()
+        : error.message
     );
 
-    return res.json({
+    res.json({
       success: false,
-      message: error.message
+      message: "Image generation failed"
     });
   }
 };
+
 
 
 
