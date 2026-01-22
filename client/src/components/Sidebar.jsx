@@ -20,9 +20,18 @@ const Sidebar = ({ sidebar, setsidebar }) => {
 
   return (
     <div
-      className={`w-60 bg-white border-r border-gray-200 flex flex-col justify-between items-center max-sm:absolute top-14 bottom-0 
-        ${sidebar ? 'translate-x-0' : 'max-sm:-translate-x-full'} transition-all duration-300 ease-in-out`}
-    >
+  className={`
+    fixed sm:relative top-0 sm:top-auto left-0
+    h-screen sm:h-auto w-60
+    bg-white border-r border-gray-200
+    flex flex-col justify-between
+    z-50
+    transform transition-transform duration-300 ease-in-out
+    ${sidebar ? 'translate-x-0' : '-translate-x-full'}
+    sm:translate-x-0
+  `}
+>
+
       <div className="my-7 w-full">
         <img
           src={user?.imageUrl}
