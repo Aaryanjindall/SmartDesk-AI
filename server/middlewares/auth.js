@@ -44,9 +44,9 @@ export const auth = async (req, res, next) => {
 
     const { userId, has } = authData;
     const hasPremiumPlan = await has({ plan: "premium" });
-
-    const free_usage =
-      authData.sessionClaims?.privateMetadata?.free_usage || 0;
+    const user = await clerkClient.users.getUser(userId);
+     const free_usage =
+      user.privateMetadata?.free_usage ?? 0;
 
     req.userId = userId;
     req.plan = hasPremiumPlan ? "premium" : "free";
