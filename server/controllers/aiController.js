@@ -345,7 +345,7 @@ const uploadResult = await cloudinary.uploader.upload(
       }
     );
 
-await sql`INSERT INTO creations (user_id,prompt,content,type,publish) VALUES (${userId},'Remove background from image', ${uploadResult.secure_url}, 'image')`;
+await sql`INSERT INTO creations (user_id,prompt,content,type,publish) VALUES (${userId},'Remove background from image', ${uploadResult.secure_url}, 'image',false)`;
 
 console.log(uploadResult.secure_url);
 
