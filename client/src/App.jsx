@@ -10,6 +10,7 @@ import GenerateImages from './pages/GenerateImages'
 import RemoveBackgound from './pages/RemoveBackground'
 import RemoveObject from './pages/RemoveObject'
 import ReviewResume from './pages/ReviewResume'
+import Qrcode from './pages/QrCode'
 import Home from './pages/Home'
 import Layout from './pages/Layout'
 import BlogTitles from './pages/BlogTitles'
@@ -32,6 +33,7 @@ function App() {
         <Route path='remove-background' element={<RemoveBackgound/>}/>
         <Route path='remove-object' element={<RemoveObject/>}/>
         <Route path='review-resume' element={<ReviewResume/>}/>
+        <Route path='generate-qrcode' element={<Qrcode/>}/>
         <Route path='community' element={<Community/>}/>
 
         </Route>
