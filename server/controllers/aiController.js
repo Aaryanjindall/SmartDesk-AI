@@ -6,6 +6,8 @@ import { v2 as cloudinary} from "cloudinary";
 import FormData from "form-data";
 // import { GoogleGenerativeAI } from "@google/generative-ai";
 const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
+import * as officeParser from "officeparser";
+// import pdf from "pdf-parse";
 // const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 import fs from "fs";
 import pdf from "pdf-parse/lib/pdf-parse.js";
@@ -550,3 +552,85 @@ res.json({ success: true,content:review})
 //     });
 //   }
 // };
+
+function chunkText(text, chunkSize = 4000) {
+  const chunks = [];
+  for (let i = 0; i < text.length; i += chunkSize) {
+    chunks.push(text.slice(i, i + chunkSize));
+  }
+  return chunks;
+}
+
+export const summarize = async (req, res) => {
+  try {
+    const { userId, plan } = req;
+    const filePath = req.file.path;
+    if(plan !== 'premium' ){
+            return res.json({ success: false, message: "This feature is only available for premium subscriptions"})
+        }
+    const databuffer = fs.readFileSync(filePath);
+    const data = await pdf(databuffer);
+    const extractedText = data.text;
+
+    if (!extractedText || extractedText.trim().length === 0) {
+      return res.status(400).json({
+        error: "No readable text found in PDF",
+      });
+    }
+
+    const chunks = chunkText(extractedText, 4000);
+
+    
+    let chunkSummaries = [];
+    console.log("part1");
+    for (const chunk of chunks) {
+      const result = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: [
+          {
+            role: "user",
+            parts: [
+              {
+                text: `Summarize the following content in 15-20 bullet points:\n\n${chunk}`,
+              },
+            ],
+          },
+        ],
+      });
+
+      chunkSummaries.push(result.text);
+    }
+    const combinedSum = chunkSummaries.join("\n");
+console.log("part2");
+    const finalResult = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: [
+        {
+          role: "user",
+          parts: [
+            {
+              text: `You are an expert summarizer.
+                     Combine and refine the following summaries into one structured summary.
+                     Remove repetition and organize with proper headings:\n\n${combinedSum}`,
+            },
+          ],
+        },
+      ],
+    });
+console.log("part3");
+    const finalSummary = finalResult.text;
+
+    await sql`INSERT INTO creations (user_id,prompt,content,type,publish) VALUES (${userId}, 'Summarize the uploaded Document',  ${finalSummary}, 'summarize-data',false)`;
+
+    // Optional: delete uploaded file
+    fs.unlinkSync(filePath);
+
+    res.json({
+      success: true,
+      content: finalSummary
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error processing PDF" });
+  }
+};

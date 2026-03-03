@@ -1,7 +1,7 @@
 import React from 'react'
 import { useUser, useClerk, Protect } from '@clerk/clerk-react'
 import { NavLink } from 'react-router-dom'
-import { Hash, House, Image, Eraser, SquarePen, Scissors, FileText, Users, LogOut, Sparkles, Gem } from 'lucide-react'
+import { Hash, House, Image, Eraser, SquarePen, Scissors, FileText, Users, LogOut, Sparkles, Gem ,QrCode,ScissorsIcon,File} from 'lucide-react'
 
 const navItems = [
   { to: '/ai', label: 'Dashboard', Icon: House, gradient: 'from-cyan-500 to-blue-500' },
@@ -11,7 +11,8 @@ const navItems = [
   { to: '/ai/remove-background', label: 'Remove Background', Icon: Eraser, gradient: 'from-orange-500 to-red-500' },
   { to: '/ai/remove-object', label: 'Remove Object', Icon: Scissors, gradient: 'from-blue-500 to-purple-500' },
   { to: '/ai/review-resume', label: 'Review Resume', Icon: FileText, gradient: 'from-green-500 to-teal-500' },
-  { to: '/ai/generate-qrcode', label: 'Generate QR', Icon: FileText, gradient: 'from-pink-500 to-purple-500' },
+  { to: '/ai/generate-qrcode', label: 'Generate QR', Icon: QrCode, gradient: 'from-pink-500 to-purple-500' },
+  { to: '/ai/summarize-data', label: 'Summarize', Icon: File, gradient: 'from-orange-500 to-red-500' },
   { to: '/ai/community', label: 'Community', Icon: Users, gradient: 'from-cyan-500 to-purple-500' }
 ]
 

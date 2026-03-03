@@ -1,4 +1,4 @@
-import { FileText, Sparkles, Zap, Download } from 'lucide-react'
+import { FileText, Sparkles, Zap, Download,QrCode } from 'lucide-react'
 import React, { useState, useRef } from 'react'
 import { QRCodeCanvas } from "qrcode.react";
 
@@ -38,7 +38,7 @@ const Qrcode = () => {
                 <div className='mb-8'>
                     <div className='flex items-center gap-3 mb-2'>
                         <div className='w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/30'>
-                            <FileText className="w-6 h-6 text-white" />
+                            <QrCode className="w-6 h-6 text-white" />
                         </div>
                         <div>
                             <h1 className="text-3xl font-bold text-purple-400">QR Code Generator</h1>

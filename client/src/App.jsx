@@ -16,7 +16,7 @@ import Layout from './pages/Layout'
 import BlogTitles from './pages/BlogTitles'
 import { useAuth } from '@clerk/clerk-react'
 import {Toaster} from 'react-hot-toast'
-
+import Summarize from './pages/Summarize'
 function App() {
   
 
@@ -34,7 +34,9 @@ function App() {
         <Route path='remove-object' element={<RemoveObject/>}/>
         <Route path='review-resume' element={<ReviewResume/>}/>
         <Route path='generate-qrcode' element={<Qrcode/>}/>
+        <Route path='summarize-data' element={<Summarize/>}/>
         <Route path='community' element={<Community/>}/>
+        
 
         </Route>
       </Routes>
